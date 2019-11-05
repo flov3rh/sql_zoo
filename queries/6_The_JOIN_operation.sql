@@ -28,8 +28,23 @@ SELECT gl.player FROM goal as gl JOIN game AS gm ON (gl.matchid = gm.id) WHERE g
 
 -- 8.
 
+SELECT DISTINCT gl.player FROM game AS gm JOIN goal gl ON (gm.id = gl.matchid) WHERE (team1 = 'GER' OR team2 = 'GER') AND teamid != 'GER';
 
+-- 9.
 
-9.
+SELECT et.teamname, COUNT(gl.teamid) FROM goal gl JOIN eteam et ON (gl.teamid = et.id) GROUP BY et.teamname;
 
-10.
+-- 10.
+SELECT gm.stadium, COUNT(gl.teamid) FROM game gm JOIN goal gl ON (gm.id = gl.matchid) GROUP BY gm.stadium;
+
+-- 11.
+
+SELECT gl.matchid, gm.mdate, COUNT(*) FROM game gm JOIN goal gl ON (gm.id = gl.matchid) WHERE team1 = 'POL' OR team2 = 'POL' GROUP BY gl.matchid, gm.mdate;
+
+-- 12.
+
+SELECT gl.matchid, gm.mdate, COUNT(*) FROM game gm JOIN goal gl ON (gm.id = gl.matchid) WHERE gl.teamid = 'GER' GROUP BY gl.matchid, gm.mdate;
+
+-- 13.
+
+SELECT gm.mdate, gm.team1, SUM( CASE WHEN gl.teamid = gm.team1 THEN 1 ELSE 0 END) AS score_1, gm. team2, SUM(CASE WHEN gl.teamid = gm.team2 THEN 1 ELSE 0 END) AS score_2 FROM game AS gm LEFT JOIN goal gl ON (gm.id = gl.matchid) GROUP BY gm.mdate, gl.matchid, gm.team1, gm.team2 ORDER BY gm.mdate, gl.matchid, gm.team1, gm.team2;
