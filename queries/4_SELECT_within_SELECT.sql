@@ -32,5 +32,9 @@ SELECT DISTINCT w.continent, (SELECT DISTINCT name FROM world WHERE continent = 
 
 -- 9. Difficult Questions That Utilize Techniques Not Covered In Prior Sections
 
+SELECT w.name,w.continent,w.population FROM world AS w WHERE w.continent IN (SELECT x.continent FROM world AS x WHERE 25000000 >= (SELECT MAX(y.population) FROM world y WHERE x.continent = y.continent));
+
 
 -- 10. Some countries have populations more than three times that of any of their neighbours (in the same continent). Give the countries and continents.
+
+SELECT w.name,w.continent FROM world AS w WHERE w.population > (SELECT (MAX(x.population)*3) FROM world AS x WHERE w.continent = x.continent AND x.name != w.name);
