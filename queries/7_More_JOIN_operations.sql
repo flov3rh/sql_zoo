@@ -44,12 +44,16 @@ SELECT m.yr, COUNT(m.title) FROM movie AS m JOIN casting AS c ON m.id = c.moviei
 
 -- 12. Lead actor in Julie Andrews movies
 
+SELECT m.title, a.name FROM movie m JOIN casting c ON (m.id = c.movieid) JOIN actor a ON (a.id = c.actorid) WHERE c.ord = 1 AND m.id IN (SELECT movieid FROM actor JOIN casting ON (actor.id = casting.actorid) JOIN movie ON (casting.movieid = movie.id) WHERE actorid IN (SELECT actor.id FROM actor WHERE name='Julie Andrews'));
 
+-- 13. Actors with 30 leading roles
 
-13.
+SELECT a.name FROM actor a WHERE a.id IN ( SELECT actorid FROM casting c WHERE c.ord = 1 GROUP BY actorid HAVING COUNT(c.ord) >= 30) ORDER BY a.name;
 
-14.
+-- 14.
 
-15.
+SELECT m.title, COUNT(c.actorid) FROM movie m JOIN casting c ON (m.id = c.movieid) WHERE m.yr = 1978 GROUP BY m.title ORDER BY COUNT(actorid) DESC, title;
 
-16.
+-- 15.
+
+SELECT a.name FROM casting c JOIN actor a ON (c.actorid = a.id) WHERE NOT a.name = 'Art Garfunkel' AND c.movieid IN ( SELECT x.movieid FROM casting x WHERE x.actorid IN (SELECT id FROM actor WHERE name = 'Art Garfunkel'));
